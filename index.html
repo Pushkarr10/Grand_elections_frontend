@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GRand Elections 2025</title>
+  <!-- Google Fonts, Font Awesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: linear-gradient(120deg, #232946 0%, #b8c1ec 100%);
+  min-height: 100vh;
+  margin: 0;
+  display: flex; justify-content: center; align-items: center;
+}
+.container {
+  background: #fffffe;
+  border-radius: 20px;
+  padding: 34px 22px;
+  width: 95vw; max-width: 380px;
+  box-shadow: 0 8px 36px rgba(35,41,70,0.11);
+  text-align: center;
+  border-top: 6.5px solid #eebbc3;
+}
+.pun {
+  font-size: 2.23rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #232946;
+  margin-bottom: 0.55rem;
+  text-shadow: 2px 1px 0 #eebbc3;
+  line-height: 1.08;
+}
+.pun .grad {
+  background: linear-gradient(90deg, #eebbc3 15%, #b8c1ec 85%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle {color:#232946; margin-bottom:20px;font-weight:500;}
+.hidden {display:none;}
+.input-group {
+  margin: 18px 0 10px;
+  text-align: left;
+}
+label {display:block;margin-bottom:5px;color:#006d77;font-weight:600;font-size:1.07em;}
+input[type="text"], input[type="password"], input[type="number"] {
+  width: 100%; font-size: 1.09em; border-radius:10px; border: 1.2px solid #b8c1ec; padding: 12px 13px; background: #ebebf2;
+  outline: none; margin-bottom: 2px;
+  transition: border 0.2s, background 0.15s;
+}
+input:focus {border-color: #eebbc3;background:#fff;}
+button {
+  width: 100%;
+  background: linear-gradient(90deg, #006d77 20%, #eebbc3 98%);
+  color: #fff; font-size: 1.18em; border: none; border-radius: 10px;
+  padding: 0.7em 0; margin:14px 0 0 0;font-weight:700; cursor:pointer;
+  box-shadow: 0 4px 12px 0 rgba(0,109,119, .09);
+  transition: background 0.18s, filter 0.19s;
+}
+button:hover {filter: brightness(1.07);}
+button:disabled {background: #e2e2e2; color: #9a9a9a;}
+.info-card {
+  background:#f6f6f8;
+  border-radius:14px;
+  padding:16px 13px;
+  margin:12px 0 13px 0;
+  box-shadow:0 3px 11px rgba(185,193,236,.04);
+  text-align:left; font-size:1.09em;
+}
+.info-card .fa-user-circle {font-size: 1.9em;color:#297ea6;}
+.status-tag {
+  display:inline-block; font-size:.98em; padding: 3px 13px; border-radius: 7px;
+  background:#b8c1ec;
+  color: #232946;
+  margin-left:6px;margin-top:5px;
+  border:1px solid #eebbc3;
+  font-weight:600;
+}
+.status-tag.voted {
+  background: #eebbc3; color: #232946;border:1px solid #b8c1ec;
+}
+.error-msg {
+  color: #e63946; font-weight: 600; margin: 7px 0 0 0; font-size:.98em;
+  min-height: 22px;
+}
+.success-msg {
+  color: #38b000; font-weight:700; margin-top:17px;font-size:1.13em;
+}
+.candidate-grid {
+  display: flex; gap:1em; flex-direction:column; justify-content:center; align-items:stretch;margin:20px 0;
+}
+.candidate-card {
+  background:#b8c1ec; border:2.5px solid #232946; border-radius:14px;
+  padding:12px 12px;font-size:1.16em;font-weight:600; cursor:pointer;
+  transition: background 0.13s, border 0.18s;
+  margin-bottom:3px; display:flex; align-items:center;justify-content:space-between;
+  color:#232946;
+}
+.candidate-card.selected {background:#006d77;color:#fff; border:2.5px solid #eebbc3;}
+@media (max-width:450px) {.container{padding:1em .6em;}}
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="page-1">
+    <div class="pun"><span class="grad">GRand</span> Elections </div>
+    <div class="subtitle" style="margin-bottom: 14px;">Cast your vote for the <b>future of your class!</b></div>
+    <form id="roll-form" autocomplete="off">
+      <div class="input-group">
+        <label for="rollInput"><i class="fa fa-id-card"></i> Roll Number</label>
+        <input type="text" id="rollInput" maxlength="7" required placeholder="e.g. 16247" pattern="\d+">
+      </div>
+      <button id="rollBtn" type="submit">Continue</button>
+      <div class="error-msg" id="rollErr"></div>
+    </form>
+  </div>
+  
+  <div id="page-2" class="hidden">
+    <div class="info-card">
+      <i class="fa fa-user-circle"></i>
+      <span id="summaryName" style="font-weight:700;"></span>
+      <span id="summaryGender"></span>
+      <span id="summaryStatus" class="status-tag"></span>
+    </div>
+    <div class="input-group" id="pinGroup">
+      <label for="pinInput"><i class="fa fa-key"></i> Enter your Unique PIN</label>
+      <input type="password" id="pinInput" inputmode="numeric" maxlength="10" required placeholder="PIN (ask from committee)">
+    </div>
+    <button id="pinBtn">Verify PIN</button>
+    <button id="backToRollBtn" type="button" style="color:#49a09d;background:#f6f6ff;font-weight:600;margin-top:10px;">&larr; Go Back</button>
+    <div class="error-msg" id="pinErr"></div>
+  </div>
+  
+  <div id="page-3" class="hidden">
+    <div style="font-weight:700;font-size:1.25em;margin-bottom:.6em;">Select your Candidate</div>
+    <div id="candidateList" class="candidate-grid"></div>
+    <button id="voteBtn" disabled>Submit Vote</button>
+    <div class="error-msg" id="voteErr"></div>
+  </div>
+  
+  <div id="page-4" class="hidden">
+    <div class="success-msg"><i class="fa fa-check-circle"></i> Your vote has been cast!</div>
+    <div style="margin:20px 0 7px 0;font-size:1.18em;">Thank you for making your voice heard in the <span class="grad"><b>GRand Elections</b></span>.<br>Results will be announced soon!</div>
+  </div>
+
+</div>
+<script>
+const api = 'https://grand-elections.onrender.com/api';
+const rollForm = document.getElementById('roll-form');
+const rollInput = document.getElementById('rollInput');
+const rollErr = document.getElementById('rollErr');
+const page1 = document.getElementById('page-1');
+const page2 = document.getElementById('page-2');
+const page3 = document.getElementById('page-3');
+const page4 = document.getElementById('page-4');
+const summaryName = document.getElementById('summaryName');
+const summaryGender = document.getElementById('summaryGender');
+const summaryStatus = document.getElementById('summaryStatus');
+const pinInput = document.getElementById('pinInput');
+const pinBtn = document.getElementById('pinBtn');
+const pinErr = document.getElementById('pinErr');
+const backToRollBtn = document.getElementById('backToRollBtn');
+const candidateList = document.getElementById('candidateList');
+const voteBtn = document.getElementById('voteBtn');
+const voteErr = document.getElementById('voteErr');
+
+let currRoll = '';
+let candidateMap = {};
+let selectedCandidate = null;
+
+// 1. Roll Number Step
+rollForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  currRoll = rollInput.value.trim();
+  rollErr.textContent = '';
+  if(!/^\d{5,7}$/.test(currRoll)) { rollErr.textContent="Enter valid roll number."; return;}
+  pinInput.value='';
+  pinErr.textContent = '';
+  voteErr.textContent = '';
+  selectedCandidate = null;
+
+  // API: checkRoll
+  try {
+    let resp = await fetch(api+'/checkRoll', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({rollNumber: currRoll})
+    });
+    let data = await resp.json();
+    if(!data.success) {
+      rollErr.textContent = data.message || "Roll number not found!";
+      return;
+    }
+    const {name, gender, voted} = data.user;
+    summaryName.textContent = " " + name;
+    summaryGender.textContent = gender === "M" ? " ♂️" : (gender === "F" ? " ♀️" : "");
+    summaryStatus.textContent = voted ? "Already Voted" : "Eligible";
+    summaryStatus.className = "status-tag" + (voted ? " voted":"");
+    document.getElementById('pinGroup').style.display = voted ? "none" : "block";
+    pinBtn.disabled = voted;
+    if(voted) pinErr.textContent = "You have already voted.";
+    else pinErr.textContent = "";
+    page1.classList.add('hidden'); page2.classList.remove('hidden');
+  } catch(e) {rollErr.textContent="Server error.";}
+});
+
+// 2. PIN Step
+pinBtn.addEventListener('click', async ()=>{
+  const pin = pinInput.value.trim();
+  pinErr.textContent = '';
+  if(pin.length<3) {pinErr.textContent="Enter your PIN.";return;}
+  // API: verifyPin
+  try {
+    let resp = await fetch(api+'/verifyPin', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({rollNumber: currRoll, pin})
+    });
+    let data = await resp.json();
+    if(!data.success) { pinErr.textContent = data.message || "Wrong PIN."; return;}
+    // Load candidate list
+    let cresp = await fetch(api+'/candidates');
+    let cdata = await cresp.json();
+    if(!cdata.success) throw new Error();
+    candidateMap = {}; candidateList.innerHTML='';
+    cdata.candidates.forEach( cand => {
+      candidateMap[cand.id] = cand.name;
+      let div = document.createElement('div');
+      div.className = "candidate-card";
+      div.textContent = cand.name;
+      div.dataset.id = cand.id;
+      div.onclick = function() {
+        document.querySelectorAll('.candidate-card').forEach(d=>d.classList.remove('selected'));
+        div.classList.add('selected');
+        selectedCandidate=cand.id; voteBtn.disabled=false;
+        voteErr.textContent='';
+      }
+      candidateList.append(div);
+    });
+    voteBtn.disabled=true;
+    page2.classList.add('hidden'); page3.classList.remove('hidden');
+  }catch(e){pinErr.textContent="PIN check failed or server error.";}
+});
+
+backToRollBtn.addEventListener('click', ()=>{
+  page2.classList.add('hidden'); page1.classList.remove('hidden');
+  rollInput.value=''; pinInput.value='';rollErr.textContent='';
+  currRoll=''; selectedCandidate=null;
+});
+
+// 3. Voting step
+voteBtn.addEventListener('click', async ()=>{
+  voteErr.textContent='';
+  if(!selectedCandidate) return;
+  try{
+    voteBtn.disabled=true;
+    let resp = await fetch(api+'/vote',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({rollNumber: currRoll, candidateId: selectedCandidate})
+    });
+    let data = await resp.json();
+    if(!data.success) {voteErr.textContent = data.message||"Voting failed."; voteBtn.disabled=false; return;}
+    // Success!
+    page3.classList.add('hidden'); page4.classList.remove('hidden');
+  }catch(e){voteErr.textContent='Server error.'; voteBtn.disabled=false;}
+});
+</script>
+</body>
+</html>
